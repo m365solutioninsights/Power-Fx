@@ -192,7 +192,8 @@ namespace Microsoft.PowerFx.Functions
             }
             else
             {
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
+                return CommonErrors.RuntimeTypeMismatch(args[1].IRContext);
             }
 
             var useUtcConversion = NeedToConvertToUtc(runner, dateTime, timeUnit);
@@ -229,18 +230,7 @@ namespace Microsoft.PowerFx.Functions
 
                 dateTime = MakeValidDateTime(runner, dateTime, timeZoneInfo);
 
-                if (irContext.ResultType._type.Kind == Core.Types.DKind.Date)
-                {
-                    return new DateValue(irContext, dateTime);
-                }
-                else if (irContext.ResultType._type.Kind == Core.Types.DKind.Time)
-                {
-                    return new TimeValue(irContext, dateTime.Subtract(_epoch));
-                }
-                else
-                {
-                    return new DateTimeValue(irContext, dateTime);
-                }
+                return new DateValue(irContext, dateTime);
             }
             catch
             {
